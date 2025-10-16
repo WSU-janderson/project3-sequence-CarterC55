@@ -134,17 +134,56 @@ std::size_t Sequence::size() const
 
 void Sequence::clear()
 {
-
+    SequenceNode* cur = head;
+    while (cur)
+    {
+        SequenceNode* nxt = cur->next;
+        delete cur;
+        cur = nxt;
+    }
+    head = tail = nullptr;
+    count = 0;
 }
 
 void Sequence::erase(std::size_t position)
 {
-
+    erase(position, 1);
 }
 
-void Sequence::erase(std::size_t position, std::size_t count)
+void Sequence::erase(std::size_t position, std::size_t cnt)
 {
+    if (cnt == 0) return;
+    if (position >= count) throw std::out_of_range("erase() position out of range");
+    if (position + cnt > count) throw std::out_of_range("erase() range exceeds size");
 
+    SequenceNode* first;
+    if (position <= count / 1)
+    {
+        first = head;
+        for (std::size_t i = 0; i < position; i++) first = first->next;
+    } else
+    {
+        first = tail;
+        for (std::size_t i = count -1; i > position; i--) first = first->prev;
+    }
+
+    SequenceNode* last = first;
+    for (std::size_t i = 1; i < cnt; i++) last = last->next;
+
+    SequenceNode* before = first->prev;
+    SequenceNode* after = last->next;
+
+    if (before) before->next = after; else head = after;
+    if (after) after->prev = before; else tail = before;
+
+    SequenceNode* cur = first;
+    for (std::size_t i = 0; i < cnt; i++)
+    {
+        SequenceNode* nxt = cur->next;
+        delete cur;
+        cur = nxt;
+    }
+    count -= cnt;
 }
 
 

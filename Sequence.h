@@ -63,7 +63,7 @@ class Sequence
     void erase(std::size_t position);
 
     //erase count elemnts at position
-    void erase(std::size_t position, std::size_t count);
+    void erase(std::size_t position, std::size_t cnt);
 
     //friend function to output all elements as a string to the output stream
     friend std::ostream& operator<<(std::ostream& os, const Sequence& s);
