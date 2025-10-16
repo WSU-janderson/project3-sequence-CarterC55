@@ -1,11 +1,11 @@
 #include "Sequence.h"
-#include <string>
-#include <ostream>
-#include <cstddef>
 
 Sequence::Sequence(std::size_t sz) : head(nullptr), tail(nullptr), count(0)
 {
-
+    for (std::size_t i = 0; i < sz; i++)
+    {
+        push_back(std::string{});
+    }
 }
 
 Sequence::Sequence(const Sequence& s) : head(nullptr), tail(nullptr), count(0)
@@ -30,7 +30,18 @@ std::string& Sequence::operator[](std::size_t position)
 
 void Sequence::push_back(std::string item)
 {
-
+    SequenceNode* newNode = new SequenceNode(item);
+    if (head == nullptr)
+    {
+        head = newNode;
+        tail = newNode;
+    } else
+    {
+        tail->next = newNode;
+        newNode->prev = tail;
+        tail = newNode;
+    }
+    count++;
 }
 
 void Sequence::pop_back()
