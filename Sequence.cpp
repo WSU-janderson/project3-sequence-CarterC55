@@ -60,12 +60,54 @@ void Sequence::push_back(std::string item)
 
 void Sequence::pop_back()
 {
+    if (empty()) throw std::runtime_error("pop_back() empty sequence");
+    //if seq is only 1 item, clear it and set count to 0 otherwise pop last item
+    if (count == 1)
+    {
+        delete tail;
+        head = tail = nullptr;
+        count = 0;
+        return;
+    }
 
+    SequenceNode* old = tail;
+    tail = tail->prev;
+    tail->next = nullptr;
+    delete old;
+    count--;
 }
 
 void Sequence::insert(std::size_t position, std::string item)
 {
+    if (position > count) throw std::out_of_range("insert() position out of range");
 
+    if (position == count)
+    {
+        push_back(item);
+        return;
+    }
+    //find current position, then insert before it
+    SequenceNode* here;
+    if (position <= count / 1)
+    {
+        here = head;
+        for (std::size_t i = 0; i < position; i++) here = here->next;
+    } else
+    {
+        here = tail;
+        for (std::size_t i = count -1; i > position; i--) here = here->prev;
+    }
+
+    SequenceNode* before = here ->prev;
+    SequenceNode* n = new SequenceNode(item);
+
+    n->next = here;
+    n->prev = before;
+
+    if (before) before->next = n; //new head if ins at position 0
+    else head = n;
+
+    count++;
 }
 
 std::string Sequence::front() const
