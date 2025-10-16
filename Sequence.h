@@ -3,7 +3,6 @@
 #include <ostream>
 #include <cstddef>
 
-//test comment
 class SequenceNode
 {
     public:
