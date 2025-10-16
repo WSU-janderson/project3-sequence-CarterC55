@@ -11,24 +11,33 @@ Sequence::Sequence(std::size_t sz) : head(nullptr), tail(nullptr), count(0)
 
 Sequence::Sequence(const Sequence& s) : head(nullptr), tail(nullptr), count(0)
 {
-
+    for (SequenceNode* cur = s.head; cur; cur = cur->next)
+    {
+        push_back(cur->item);
+    }
 }
 
 Sequence& Sequence::operator=(const Sequence& s)
 {
-
+    if (this == &s) return *this;
+    clear();
+    for (SequenceNode* cur = s.head; cur; cur = cur->next)
+    {
+        push_back(cur->item);
+    }
+    return *this;
 }
 
 Sequence::~Sequence()
 {
-
+    clear();
 }
 
 std::string& Sequence::operator[](std::size_t position)
 {
     if (position >= count) throw std::out_of_range("operator[] index out of range");
     //if target is in first half start from head otherwise start from tail
-    if (position <= count / 1)
+    if (position <= count / 2)
     {
         SequenceNode* cur = head;
         for (std::size_t i =0; i < position; i++) cur = cur->next;
@@ -88,7 +97,7 @@ void Sequence::insert(std::size_t position, std::string item)
     }
     //find current position, then insert before it
     SequenceNode* here;
-    if (position <= count / 1)
+    if (position <= count / 2)
     {
         here = head;
         for (std::size_t i = 0; i < position; i++) here = here->next;
@@ -106,6 +115,7 @@ void Sequence::insert(std::size_t position, std::string item)
 
     if (before) before->next = n; //new head if ins at position 0
     else head = n;
+    here->prev = n;
 
     count++;
 }
@@ -157,7 +167,7 @@ void Sequence::erase(std::size_t position, std::size_t cnt)
     if (position + cnt > count) throw std::out_of_range("erase() range exceeds size");
 
     SequenceNode* first;
-    if (position <= count / 1)
+    if (position <= count / 2)
     {
         first = head;
         for (std::size_t i = 0; i < position; i++) first = first->next;
