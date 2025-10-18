@@ -1,3 +1,11 @@
+/**
+ *Sequence.cpp
+ *Name: Carter Chinn
+ *Implements doubly linked sequence
+ *Includes operator[] overload, push_back, pop_back, insert, erase, clear,
+ *deep copy, destructor, and operator<< overload.
+ */
+
 #include "Sequence.h"
 #include "stdexcept"
 
